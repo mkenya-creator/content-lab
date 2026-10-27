@@ -1,0 +1,282 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viral Content & Micro-Agency Suite v3.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #0B0F19; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .tab-btn.active { background: #10B981; color: #000; font-weight: 700; }
+  </style>
+</head>
+<body class="pb-12">
+  <header class="p-4 border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <i class="fa-solid fa-bolt text-emerald-400 text-xl"></i>
+      <h1 class="font-bold text-lg text-white">Content Lab <span class="text-xs text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded">v3.0</span></h1>
+    </div>
+  </header>
+
+  <nav class="flex overflow-x-auto p-2 bg-slate-900 border-b border-slate-800 gap-1 text-xs no-scrollbar">
+    <button onclick="switchTab('hooks')" id="btn-hooks" class="tab-btn active px-3 py-2 rounded-lg flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-fire"></i> Hook & Script</button>
+    <button onclick="switchTab('studio')" id="btn-studio" class="tab-btn px-3 py-2 rounded-lg text-slate-400 flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Prompts</button>
+    <button onclick="switchTab('planner')" id="btn-planner" class="tab-btn px-3 py-2 rounded-lg text-slate-400 flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-list-check"></i> Reel Planner</button>
+    <button onclick="switchTab('agency')" id="btn-agency" class="tab-btn px-3 py-2 rounded-lg text-slate-400 flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-calculator"></i> Pricing & WhatsApp</button>
+  </nav>
+
+  <main class="p-4 max-w-2xl mx-auto space-y-6">
+
+    <!-- HOOK & SCRIPT SECTION -->
+    <section id="tab-hooks" class="tab-content space-y-4">
+      <div class="glass-card p-4 rounded-xl space-y-3">
+        <h2 class="text-sm font-semibold text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> Hook Generator</h2>
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Select Niche Focus</label>
+          <select id="nicheSelect" class="w-full bg-slate-800 border border-slate-700 text-sm rounded-lg p-2 text-white">
+            <option value="stoic">Dark Stoicism & Philosophy</option>
+            <option value="biz">Business & Money Mindset</option>
+            <option value="tech">AI Tools & Tech Hacks</option>
+            <option value="motivation">Discipline & Self Improvement</option>
+          </select>
+        </div>
+        <button onclick="generateHooks()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm py-2.5 rounded-lg transition">Generate 5 Hooks</button>
+        <div id="hookList" class="space-y-2 mt-3"></div>
+      </div>
+
+      <div class="glass-card p-4 rounded-xl space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-semibold text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-scroll"></i> Script Builder</h2>
+          <span id="voiceTiming" class="text-xs text-cyan-400 font-mono bg-cyan-950/50 border border-cyan-800/50 px-2 py-0.5 rounded">0 wds | ~0s audio</span>
+        </div>
+        <input type="text" id="scriptTitle" placeholder="Video Title / Topic..." class="w-full bg-slate-800 border border-slate-700 text-sm rounded-lg p-2 text-white">
+        <textarea id="scriptBody" oninput="updateAudioStats()" rows="5" placeholder="Write or paste your short script here..." class="w-full bg-slate-800 border border-slate-700 text-sm rounded-lg p-2 text-white focus:outline-none focus:border-emerald-500"></textarea>
+        <div class="flex gap-2">
+          <button onclick="saveToPlanner()" class="flex-1 bg-slate-800 border border-slate-700 text-xs py-2 rounded-lg hover:bg-slate-700">Save to Planner</button>
+          <button onclick="copyScript()" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs py-2 rounded-lg">Copy Script</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI PROMPTS SECTION -->
+    <section id="tab-studio" class="tab-content hidden space-y-4">
+      <div class="glass-card p-4 rounded-xl space-y-3">
+        <h2 class="text-sm font-semibold text-cyan-400 flex items-center gap-2"><i class="fa-solid fa-image"></i> Leonardo.Ai Visual Prompt Generator</h2>
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Subject Description</label>
+          <input type="text" id="subjectInput" placeholder="e.g. Ancient Marcus Aurelius statue in storm" class="w-full bg-slate-800 border border-slate-700 text-sm rounded-lg p-2 text-white mb-2">
+          <label class="text-xs text-slate-400 mb-1 block">Visual Atmosphere</label>
+          <select id="styleSelect" class="w-full bg-slate-800 border border-slate-700 text-sm rounded-lg p-2 text-white mb-3">
+            <option value="cinematic">Dark Cinematic, 8k, Moody Lighting, Gold Highlights</option>
+            <option value="cyberpunk">Neon Cyberpunk, Ultra Detailed, Obsidian Black Studio</option>
+            <option value="minimalist">Minimalist Charcoal Sketch, High Contrast, Dramatic Shadows</option>
+          </select>
+        </div>
+        <button onclick="buildPrompt()" class="w-full bg-cyan-500 text-slate-950 font-bold text-sm py-2.5 rounded-lg">Generate Prompt String</button>
+        <div id="promptResult" class="p-3 bg-slate-900 border border-slate-800 text-xs font-mono rounded-lg hidden">
+          <p id="promptText" class="text-slate-300 select-all"></p>
+          <button onclick="copyPrompt()" class="mt-2 text-cyan-400 text-xs font-bold hover:underline">Copy Prompt</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANNER KANBAN SECTION -->
+    <section id="tab-planner" class="tab-content hidden space-y-4">
+      <div class="glass-card p-4 rounded-xl space-y-3">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-semibold text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-kanban"></i> Production Board</h2>
+          <button onclick="clearPlanner()" class="text-xs text-red-400 hover:underline">Clear Saved</button>
+        </div>
+        <div id="plannerList" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- AGENCY PRICING & WHATSAPP SECTION -->
+    <section id="tab-agency" class="tab-content hidden space-y-4">
+      <div class="glass-card p-4 rounded-xl space-y-3">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-semibold text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Proposal Generator</h2>
+          <div class="flex border border-slate-700 rounded-lg overflow-hidden text-xs">
+            <button onclick="setCurrency('KES')" id="curr-kes" class="px-2 py-1 bg-emerald-500 text-black font-bold">KES</button>
+            <button onclick="setCurrency('USD')" id="curr-usd" class="px-2 py-1 bg-slate-800 text-slate-400">USD</button>
+          </div>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div>
+            <label class="text-slate-400">Client / Business Name</label>
+            <input type="text" id="clientName" placeholder="e.g. Apex Gym Athi River" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white mt-1">
+          </div>
+          <div>
+            <label class="text-slate-400">Number of Reels / Shorts</label>
+            <input type="number" id="reelCount" value="8" oninput="calculateQuote()" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white mt-1">
+          </div>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center">
+          <span class="text-xs text-slate-400">Total Project Quote:</span>
+          <span id="quoteTotal" class="text-base font-bold text-emerald-400">KES 16,000</span>
+        </div>
+        <button onclick="generateWhatsAppProposal()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm py-2.5 rounded-lg flex items-center justify-center gap-2">
+          <i class="fa-brands fa-whatsapp text-base"></i> Send Proposal on WhatsApp
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let currentCurrency = 'KES';
+    const hookData = {
+      stoic: [
+        "99% of people realize this too late about self-discipline...",
+        "If you feel stuck right now, Seneca had the exact solution 2,000 years ago.",
+        "Stop giving power to things you cannot control.",
+        "The hardest truth about emotional intelligence nobody tells you...",
+        "Why being silent in a noisy room is your strongest weapon."
+      ],
+      biz: [
+        "How to build a simple online service that pays you daily.",
+        "Stop trading hours for money. Do this instead...",
+        "The 3 zero-cost AI tools every small business needs today.",
+        "Why 90% of business owners fail in their first 6 months.",
+        "How to scale your sales using automated WhatsApp tools."
+      ],
+      tech: [
+        "This free AI tool feels illegal to know for content creators.",
+        "How to edit a full 60-second viral short in under 5 minutes.",
+        "Top 3 free tools to automate your daily tasks.",
+        "Why you don't need expensive gear to launch a channel.",
+        "The secret workflow top faceless accounts use in 2026."
+      ],
+      motivation: [
+        "In 6 months, you can either have excuses or results. Not both.",
+        "Do it tired. Do it scared. Just don't quit.",
+        "Your future self is watching you right now through memories.",
+        "Small daily habits compound faster than you think.",
+        "The real reason you keep procrastinating (and how to fix it)."
+      ]
+    };
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+        el.classList.add('text-slate-400');
+      });
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).classList.add('active');
+      document.getElementById('btn-' + tabId).classList.remove('text-slate-400');
+    }
+
+    function generateHooks() {
+      const niche = document.getElementById('nicheSelect').value;
+      const hooks = hookData[niche] || hookData.stoic;
+      const listEl = document.getElementById('hookList');
+      listEl.innerHTML = '';
+      hooks.forEach(h => {
+        const item = document.createElement('div');
+        item.className = 'p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs flex justify-between items-center gap-2';
+        item.innerHTML = `<span class="text-slate-200">${h}</span><button onclick="useHook('${h.replace(/'/g, "\\'")}')" class="text-emerald-400 font-semibold text-xs shrink-0 hover:underline">Use</button>`;
+        listEl.appendChild(item);
+      });
+    }
+
+    function useHook(hookText) {
+      document.getElementById('scriptBody').value = hookText + "\n\n";
+      updateAudioStats();
+    }
+
+    function updateAudioStats() {
+      const text = document.getElementById('scriptBody').value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      const estSeconds = Math.round((words / 150) * 60);
+      document.getElementById('voiceTiming').innerText = `${words} wds | ~${estSeconds}s audio`;
+    }
+
+    function copyScript() {
+      const text = document.getElementById('scriptBody').value;
+      if (!text) return alert("Write a script first!");
+      navigator.clipboard.writeText(text);
+      alert("Script copied to clipboard!");
+    }
+
+    function saveToPlanner() {
+      const title = document.getElementById('scriptTitle').value || "Untitled Video";
+      const body = document.getElementById('scriptBody').value;
+      if (!body) return alert("Write a script before saving!");
+      const planner = JSON.parse(localStorage.getItem('lab_planner') || '[]');
+      planner.unshift({ id: Date.now(), title, body, date: new Date().toLocaleDateString() });
+      localStorage.setItem('lab_planner', JSON.stringify(planner));
+      alert("Saved to Reel Planner!");
+      renderPlanner();
+    }
+
+    function renderPlanner() {
+      const planner = JSON.parse(localStorage.getItem('lab_planner') || '[]');
+      const el = document.getElementById('plannerList');
+      if (planner.length === 0) {
+        el.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No saved scripts in planner yet.</p>';
+        return;
+      }
+      el.innerHTML = planner.map(item => `
+        <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs space-y-1">
+          <div class="flex justify-between font-semibold text-emerald-400">
+            <span>${item.title}</span>
+            <span class="text-slate-500 text-[10px]">${item.date}</span>
+          </div>
+          <p class="text-slate-300 line-clamp-2">${item.body}</p>
+        </div>
+      `).join('');
+    }
+
+    function clearPlanner() {
+      if (confirm("Clear all items from planner?")) {
+        localStorage.removeItem('lab_planner');
+        renderPlanner();
+      }
+    }
+
+    function buildPrompt() {
+      const subj = document.getElementById('subjectInput').value;
+      const style = document.getElementById('styleSelect').value;
+      if (!subj) return alert("Enter a subject description first!");
+      const full = `${subj}, vertical 9:16 aspect ratio, cinematic composition, ${style}, photorealistic, dramatic studio light, hyper detailed`;
+      document.getElementById('promptText').innerText = full;
+      document.getElementById('promptResult').classList.remove('hidden');
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById('promptText').innerText;
+      navigator.clipboard.writeText(text);
+      alert("Prompt string copied!");
+    }
+
+    function setCurrency(curr) {
+      currentCurrency = curr;
+      document.getElementById('curr-kes').className = curr === 'KES' ? 'px-2 py-1 bg-emerald-500 text-black font-bold' : 'px-2 py-1 bg-slate-800 text-slate-400';
+      document.getElementById('curr-usd').className = curr === 'USD' ? 'px-2 py-1 bg-emerald-500 text-black font-bold' : 'px-2 py-1 bg-slate-800 text-slate-400';
+      calculateQuote();
+    }
+
+    function calculateQuote() {
+      const count = parseInt(document.getElementById('reelCount').value) || 0;
+      const rate = currentCurrency === 'KES' ? 2000 : 15;
+      const total = count * rate;
+      document.getElementById('quoteTotal').innerText = `${currentCurrency} ${total.toLocaleString()}`;
+    }
+
+    function generateWhatsAppProposal() {
+      const client = document.getElementById('clientName').value || "Client";
+      const count = document.getElementById('reelCount').value || 8;
+      const total = document.getElementById('quoteTotal').innerText;
+      const msg = `Hi ${client}, here is your custom Reel Growth Package quote:\n\n• Deliverables: ${count} Short-form Videos (Scripting, Voiceover, Editing)\n• Total Investment: ${total}\n\nLet me know if you'd like to get started this week!`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Init
+    generateHooks();
+    renderPlanner();
+  </script>
+</body>
+</html>
